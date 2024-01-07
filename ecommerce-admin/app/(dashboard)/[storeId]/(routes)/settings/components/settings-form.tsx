@@ -2,7 +2,6 @@
 import { Heading } from "@/components/ui/heading"
 import { Button } from "@/components/ui/button"
 import * as z from "zod"
-import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
@@ -12,6 +11,10 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
+import axios from "axios"
+import { AlertModal } from "@/components/modals/alert-modal"
+import { ApiAlert } from "@/components/ui/api-alert"
+import { useOrigin } from "@/hooks/use-origin"
 
 import {
   Form,
@@ -37,12 +40,37 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   }) => {
     const params = useParams();
     const router = useRouter();  
+
+    const origin = useOrigin();
+
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const onSubmit = async (data: SettingsFormValues) => {
-        console.log(data)
-      };
-    
+      try {
+        setLoading(true);
+        await axios.patch(`/api/stores/${params.storeId}`, data);
+        router.refresh();
+        toast.success('Store updated.');
+      } catch (error: any) {
+        toast.error('Something went wrong.');
+      } finally {
+        setLoading(false);
+      }      
+    };
+    const onDelete = async () => {
+      try {
+        setLoading(true);
+        await axios.delete(`/api/stores/${params.storeId}`);
+        router.refresh();
+        router.push('/');
+        toast.success('Store deleted.');
+      } catch (error: any) {
+        toast.error('Make sure you removed all products and categories first.');
+      } finally {
+        setLoading(false);
+        setOpen(false);
+      }
+    }
 
     const form = useForm<SettingsFormValues>({
       resolver: zodResolver(formSchema),
@@ -51,7 +79,12 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
     
     return(
         <>
- 
+        <AlertModal 
+          isOpen={open} 
+          onClose={() => setOpen(false)}
+          onConfirm={onDelete}
+          loading={loading}
+        />
          <div className="flex items-center justify-between">
             <Heading title="Store settings" description="Manage store preferences" />
             <Button
@@ -86,8 +119,13 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               </Button>
             </form>
           </Form>
-          <Separator />
 
+          <Separator />
+          <ApiAlert 
+            title="NEXT_PUBLIC_API_URL" 
+            variant="public" 
+            description={`${origin}/api/${params.storeId}`}
+          />
         </>
     )
 }
