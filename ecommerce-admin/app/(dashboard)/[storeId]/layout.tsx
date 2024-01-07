@@ -1,8 +1,8 @@
-//[storeId] means things comes to this file must have storeId
-import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
-import prismadb from '@/lib/prismadb';
+import { auth } from '@clerk/nextjs';
+
 import Navbar from '@/components/navbar'
+import prismadb from '@/lib/prismadb';
 
 export default async function DashboardLayout({
   children,
@@ -24,16 +24,14 @@ export default async function DashboardLayout({
     }
    });
 
-    //check if store exists
-    if (!store) {
-        redirect('/');
-    };
+  if (!store) {
+    redirect('/');
+  };
 
-    return (
-        <>
-        {/* <div>This will be a NavBar</div> */}
-        <Navbar />
-        {children}
-        </>
-    );
+  return (
+    <>
+      <Navbar />
+      {children}
+    </>
+  );
 };

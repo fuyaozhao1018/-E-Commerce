@@ -1,11 +1,11 @@
 import { UserButton, auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { MainNav } from "@/components/main-nav";
 import StoreSwitcher from "@/components/store-switcher";
+import { MainNav } from "@/components/main-nav";
 // import { ThemeToggle } from "@/components/theme-toggle";
 import prismadb from "@/lib/prismadb";
 
-const Navbar = async() => {
+const Navbar = async () => {
   const { userId } = auth();
 
   if (!userId) {
@@ -20,7 +20,6 @@ const Navbar = async() => {
 
   return ( 
     <div className="border-b">
-        This is a comp nav 
       <div className="flex h-16 items-center px-4">
         <StoreSwitcher items={stores} />
         <MainNav className="mx-6" />
