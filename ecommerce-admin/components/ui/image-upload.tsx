@@ -17,8 +17,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   disabled,
   onChange,
   onRemove,
-  value
-}) => {
+  value }) => {
         const [isMounted, setIsMounted] = useState(false);
 
         useEffect(() => {setIsMounted(true);}, []);
@@ -39,7 +38,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           </div>
         ))}
       </div>
-      <CldUploadWidget onUpload={onUpload} uploadPreset="t4drjppf">
+      <CldUploadWidget onUpload={onUpload} uploadPreset="wqyyfvni">
             {({ open }) => {
                 const onClick = () => {open();};
                 return (
