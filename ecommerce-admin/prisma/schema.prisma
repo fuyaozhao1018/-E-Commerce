@@ -22,7 +22,7 @@ model Store {
   categories      Category[] @relation("StoreToCategory")
   // products        Product[]  @relation("StoreToProduct")
   sizes           Size[]     @relation("StoreToSize")
-  // colors          Color[]     @relation("StoreToColor")
+  colors          Color[]     @relation("StoreToColor")
   // orders          Order[]     @relation("StoreToOrder")
 }
 
@@ -58,6 +58,19 @@ model Size {
   id          String    @id @default(uuid())
   storeId     String    // Foreign Key to Store
   store       Store     @relation("StoreToSize", fields: [storeId], references: [id])
+  name        String
+  value       String
+  // products    Product[] // Relation to Product model
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([storeId])
+}
+
+model Color {
+  id          String   @id @default(uuid())
+  storeId     String   // Foreign Key to Store
+  store       Store    @relation("StoreToColor", fields: [storeId], references: [id])
   name        String
   value       String
   // products    Product[] // Relation to Product model
