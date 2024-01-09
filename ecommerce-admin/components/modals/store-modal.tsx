@@ -1,5 +1,4 @@
 "use client";
-
 import { useStoreModal } from "@/hooks/use-store-modal";
 import { Modal } from "../ui/modal";
 import * as z from "zod"
@@ -65,7 +64,7 @@ export const StoreModal = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>Store Name</FormLabel>
                         <FormControl>
                           {/* disabled when loading */}
                             <Input  disabled={loading} placeholder="E-Commerce" {...field} />
